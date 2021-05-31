@@ -2,7 +2,8 @@ package io.cucumber.shouty;
 
 import java.util.List;
 
-public class Person {
+public record Person(String name) {
+
     public void moveTo(Integer distance) {
     }
 
