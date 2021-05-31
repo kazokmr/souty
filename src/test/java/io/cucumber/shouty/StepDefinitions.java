@@ -14,7 +14,8 @@ public class StepDefinitions {
     private Person sean;
     private String messageFromSean;
 
-    @Given("{person} is located {int} metre(s) from Sean")
+    //    @Given("{person} is located {int} metre(s) from Sean")
+    @Given("{person}はショーンから{int}メートル離れている")
     public void located_metres(Person person, Integer distance) {
         lucy = person;
         person.moveTo(distance);
