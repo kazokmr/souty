@@ -14,16 +14,17 @@ public class StepDefinitions {
     private Person sean;
     private String messageFromSean;
 
-    //    @Given("{person} is located {int} metre(s) from Sean")
-    @Given("{person}はショーンから{int}メートル離れている")
-    public void located_metres(Person person, Integer distance) {
-        lucy = person;
-        person.moveTo(distance);
+    @Given("Lucy is located {int} metre(s) from Sean")
+    public void located_metres(Integer distance) {
+        Network network = new Network();
+        lucy = new Person(network);
+        sean = new Person(network);
+        lucy.moveTo(distance);
     }
 
-    @When("{person} shouts {string}")
-    public void shouts(Person person, String message) {
-        person.shout(message);
+    @When("Sean shouts {string}")
+    public void shouts(String message) {
+        sean.shout(message);
         messageFromSean = message;
     }
 
