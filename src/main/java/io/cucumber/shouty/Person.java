@@ -6,15 +6,17 @@ import java.util.List;
 public class Person {
 
     private final Network network;
+    private final int location;
     private final List<String> messagesHeard = new ArrayList<>();
 
-    public Person(Network network) {
+    public Person(Network network, int location) {
         this.network = network;
         this.network.subscribe(this);
+        this.location = location;
     }
 
     public void shout(String message) {
-        network.broadcast(message);
+        network.broadcast(message, location);
     }
 
     public List<String> getMessagesHeard() {
@@ -23,5 +25,9 @@ public class Person {
 
     public void hear(String message) {
         messagesHeard.add(message);
+    }
+
+    public int getLocation() {
+        return location;
     }
 }

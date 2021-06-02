@@ -8,7 +8,6 @@ import io.cucumber.java.en.When;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StepDefinitions {
@@ -19,13 +18,17 @@ public class StepDefinitions {
 
     @Before
     public void createNetwork() {
-        network = new Network();
         people = new HashMap<>();
     }
 
-    @Given("a person named {word}")
-    public void aPersonNamedLucy(String name) {
-        people.put(name, new Person(network));
+    @Given("the range is {int}")
+    public void the_range_is(Integer range) {
+        network = new Network(range);
+    }
+
+    @Given("a person named {word} is located at {int}")
+    public void a_person_named_sean_is_located_at(String name, Integer location) {
+        people.put(name, new Person(network, location));
     }
 
     @When("Sean shouts {string}")
@@ -34,8 +37,13 @@ public class StepDefinitions {
         messageFromSean = message;
     }
 
-    @Then("Lucy hears Sean's message")
+    @Then("Lucy should hear Sean's message")
     public void hears_message() {
-        assertThat(people.get("Lucy").getMessagesHeard()).isEqualTo(singletonList(messageFromSean));
+        assertThat(people.get("Lucy").getMessagesHeard()).contains(messageFromSean);
+    }
+
+    @Then("Lucy should not hear Sean's message")
+    public void lucy_should_not_hear_sean_s_message() {
+        assertThat(people.get("Lucy").getMessagesHeard()).doesNotContain(messageFromSean);
     }
 }

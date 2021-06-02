@@ -6,8 +6,8 @@ import io.cucumber.shouty.Person;
 
 public class ParameterTypes {
 
-    @ParameterType("Lucy|Sean")
-    public Person person(String name) {
-        return new Person(new Network());
+    @ParameterType("0|100")
+    public Person person(String range) {
+        return new Person(new Network(Integer.parseInt(range)), 0);
     }
 }
