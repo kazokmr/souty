@@ -1,11 +1,13 @@
 package io.cucumber.shouty;
 
 import io.cucumber.java.Before;
+import io.cucumber.java.DataTableType;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,9 +34,9 @@ public class StepDefinitions {
         people.put(name, new Person(network, 0));
     }
 
-    @Given("a person named {word} is located at {int}")
-    public void a_person_named_sean_is_located_at(String name, Integer location) {
-        people.put(name, new Person(network, location));
+    @Given("people are located at")
+    public void people_are_located_at(List<Whereabouts> whereabouts) {
+        whereabouts.forEach(row -> people.put(row.name(), new Person(network, row.location())));
     }
 
     @When("Sean shouts {string}")
@@ -53,13 +55,21 @@ public class StepDefinitions {
         assertThat(people.get("Lucy").getMessagesHeard()).contains(messageFromSean);
     }
 
-    @Then("Lucy should hear")
-    public void lucyShouldHear() {
-        assertThat(people.get("Lucy").getMessagesHeard().size()).isGreaterThanOrEqualTo(1);
+    @Then("{word} should hear")
+    public void lucyShouldHear(String name) {
+        assertThat(people.get(name).getMessagesHeard().size()).isGreaterThanOrEqualTo(1);
     }
 
-    @Then("Lucy should not hear")
-    public void lucyShouldNotHear() {
-        assertThat(people.get("Lucy").getMessagesHeard()).isEmpty();
+    @Then("{word} should not hear")
+    public void lucyShouldNotHear(String name) {
+        assertThat(people.get(name).getMessagesHeard()).isEmpty();
+    }
+
+    @DataTableType
+    public Whereabouts defineWhereabouts(Map<String, String> entry) {
+        return new Whereabouts(entry.get("name"), Integer.parseInt(entry.get("location")));
+    }
+
+    record Whereabouts(String name, Integer location) {
     }
 }
