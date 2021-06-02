@@ -2,6 +2,8 @@ package io.cucumber.shouty;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -40,5 +42,20 @@ public class NetworkTest {
         network.subscribe(lionel);
         network.broadcast(message, locationAtSean);
         verify(lionel, never()).hear(message);
+    }
+
+    @Test
+    void does_not_broadcast_a_message_over_180_characters_even_if_listener_is_in_range() {
+        int locationAtSean = 0;
+
+        char[] chars = new char[181];
+        Arrays.fill(chars, 'x');
+        String longMessage = String.valueOf(chars);
+
+        Person lucy = mock(Person.class);
+        network.subscribe(lucy);
+        network.broadcast(longMessage, locationAtSean);
+
+        verify(lucy, never()).hear(longMessage);
     }
 }

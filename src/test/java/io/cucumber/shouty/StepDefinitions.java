@@ -53,17 +53,25 @@ public class StepDefinitions {
         people.get("Sean").shout("Hello Cucumber!");
     }
 
+    @When("Sean shouts the following message")
+    public void sean_shouts_the_following_message(String message) {
+        people.get("Sean").shout(message);
+        messageFromSean = message;
+//        System.out.println(message);
+    }
+
     @Then("Lucy should hear Sean's message")
     public void hears_message() {
         assertThat(people.get("Lucy").getMessagesHeard()).contains(messageFromSean);
     }
 
-    @Then("{word} should hear")
+
+    @Then("{word} should hear a shout")
     public void lucyShouldHear(String name) {
         assertThat(people.get(name).getMessagesHeard().size()).isGreaterThanOrEqualTo(1);
     }
 
-    @Then("{word} should not hear")
+    @Then("{word} should not hear a shout")
     public void lucyShouldNotHear(String name) {
         assertThat(people.get(name).getMessagesHeard()).isEmpty();
     }

@@ -18,7 +18,7 @@ Feature: : Hear shout
         | name     | Sean | Lucy |
         | location | 0    | 50   |
       When Sean shouts
-      Then Lucy should hear
+      Then Lucy should hear a shout
 
     Scenario: Listener is out of range
       Given the range is 100
@@ -26,7 +26,7 @@ Feature: : Hear shout
         | name     | Sean | Larry |
         | location | 0    | 150   |
       When Sean shouts
-      Then Larry should not hear
+      Then Larry should not hear a shout
 
   Rule: Listener should be able to hear multiple shouts
 
@@ -38,3 +38,18 @@ Feature: : Hear shout
       Then Lucy hears the following messages:
         | Free bagels! |
         | Free toast!  |
+
+  Rule: Maximum length of message is 180 characters
+
+    Scenario: Message is too long
+      Given a person named Sean
+      And a person named Lucy
+      When Sean shouts the following message
+      """
+      This is a really long message
+      so long in fact that I am not going to
+      be allowed to send it, at least if I keep
+      typing like this until the length is over
+      the limit of 180 characters.
+      """
+      Then Lucy should not hear a shout
