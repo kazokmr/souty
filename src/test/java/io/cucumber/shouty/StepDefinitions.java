@@ -1,7 +1,9 @@
 package io.cucumber.shouty;
 
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.DataTableType;
+import io.cucumber.java.Transpose;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -9,6 +11,7 @@ import io.cucumber.java.en.When;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,7 +38,7 @@ public class StepDefinitions {
     }
 
     @Given("people are located at")
-    public void people_are_located_at(List<Whereabouts> whereabouts) {
+    public void people_are_located_at(@Transpose List<Whereabouts> whereabouts) {
         whereabouts.forEach(row -> people.put(row.name(), new Person(network, row.location())));
     }
 
@@ -63,6 +66,13 @@ public class StepDefinitions {
     @Then("{word} should not hear")
     public void lucyShouldNotHear(String name) {
         assertThat(people.get(name).getMessagesHeard()).isEmpty();
+    }
+
+    @Then("Lucy hears the following messages:")
+    public void lucy_hears_the_following_messages(DataTable expectedMessages) {
+        List<List<String>> actualMessages =
+                people.get("Lucy").getMessagesHeard().stream().map(List::of).collect(Collectors.toList());
+        expectedMessages.diff(DataTable.create(actualMessages));
     }
 
     @DataTableType
