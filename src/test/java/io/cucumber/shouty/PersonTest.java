@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Collections;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
@@ -53,7 +51,7 @@ public class PersonTest {
         String message = "Free bagels!";
         Person lucy = new Person(network, 100);
         lucy.hear(message);
-        assertThat(lucy.getMessagesHeard()).containsAll(Collections.singletonList(message));
+        assertThat(lucy.getMessagesHeard()).contains(message);
     }
 
 }
