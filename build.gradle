@@ -19,7 +19,4 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    systemProperties = [
-            'plugin': ["pretty"]
-    ]
 }
