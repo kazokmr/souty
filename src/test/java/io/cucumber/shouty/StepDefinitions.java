@@ -7,6 +7,7 @@ import io.cucumber.java.Transpose;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.shouty.support.Whereabouts;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +40,7 @@ public class StepDefinitions {
 
     @Given("people are located at")
     public void people_are_located_at(@Transpose List<Whereabouts> whereabouts) {
-        whereabouts.forEach(row -> people.put(row.name(), new Person(network, row.location())));
+        whereabouts.forEach(row -> people.put(row.getName(), new Person(network, row.getLocation())));
     }
 
     @When("Sean shouts {string}")
@@ -88,6 +89,4 @@ public class StepDefinitions {
         return new Whereabouts(entry.get("name"), Integer.parseInt(entry.get("location")));
     }
 
-    record Whereabouts(String name, Integer location) {
-    }
 }

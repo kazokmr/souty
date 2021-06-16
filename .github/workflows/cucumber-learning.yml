@@ -1,0 +1,54 @@
+# Gradle で Cucumberのテストを実行します
+name: Run Cucumber Test
+
+on:
+  # mainブランチへPull Requestを行うブランチ と Marge後のmainブランチを対象にします
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+  # このWorkflowをGitHub Actionsから手動で実行することも許可
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    # 実行環境はUbuntu
+    runs-on: ubuntu-latest
+
+    steps:
+      # リポジトリをcheckoutする
+      - uses: actions/checkout@v2
+
+      # OpenJDK のセットアップ
+      - name: Set up JDK
+        uses: actions/setup-java@v2.1.0
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      # 依存関係のキャッシング
+      - name: Cache Gradle package
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{runner.os}}-graled_${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # ビルトの実行 (Cucumber reportsにCI情報を出力する）
+      - name: Build with Gradle
+        run: ./gradlew clean test
+        env:
+          CI: true
+
+      # 不要なキャッシュを削除
+      - name: Cleanup Gradle Cache
+        run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
