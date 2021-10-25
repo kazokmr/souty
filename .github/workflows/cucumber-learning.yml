@@ -25,21 +25,15 @@ jobs:
 
       # OpenJDK のセットアップ
       - name: Set up JDK
-        uses: actions/setup-java@v2.1.0
+        uses: actions/setup-java@v2
         with:
-          java-version: '11'
-          distribution: 'adopt'
+          distribution: 'temurin'
+          java-version: '17'
+          cache: gradle
 
-      # 依存関係のキャッシング
-      - name: Cache Gradle package
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{runner.os}}-graled_${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+      # gradle-wrapper.jar の整合性確認
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
 
       # ビルトの実行 (Cucumber reportsにCI情報を出力する）
       - name: Build with Gradle
