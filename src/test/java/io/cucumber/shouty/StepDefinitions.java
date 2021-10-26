@@ -9,6 +9,7 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.shouty.support.Whereabouts;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,13 +20,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class StepDefinitions {
 
     private static final int DEFAULT_RANGE = 100;
-    private String messageFromSean;
     private Network network = new Network(DEFAULT_RANGE);
     private Map<String, Person> people;
+    private Map<String, List<String>> messagesShoutedBy;
+
+    @DataTableType
+    public Whereabouts defineWhereabouts(Map<String, String> entry) {
+        return new Whereabouts(entry.get("name"), Integer.parseInt(entry.get("location")));
+    }
 
     @Before
     public void createNetwork() {
         people = new HashMap<>();
+        messagesShoutedBy = new HashMap<>();
     }
 
     @Given("the range is {int}")
@@ -43,29 +50,38 @@ public class StepDefinitions {
         whereabouts.forEach(row -> people.put(row.getName(), new Person(network, row.getLocation())));
     }
 
+    @Given("Sean has bought {int} credits")
+    public void seanHasBoughtCredits(int credits) {
+        people.get("Sean").setCredits(credits);
+    }
+
     @When("Sean shouts {string}")
     public void shouts(String message) {
-        people.get("Sean").shout(message);
-        messageFromSean = message;
+        shout(message);
     }
 
     @When("Sean shouts")
     public void seanShouts() {
-        people.get("Sean").shout("Hello Cucumber!");
+        shout("Hello Cucumber!");
     }
 
     @When("Sean shouts the following message")
     public void sean_shouts_the_following_message(String message) {
+        shout(message);
+    }
+
+    private void shout(String message) {
         people.get("Sean").shout(message);
-        messageFromSean = message;
-//        System.out.println(message);
+        messagesShoutedBy.computeIfAbsent("Sean", s -> new ArrayList<>());
+        messagesShoutedBy.get("Sean").add(message);
     }
 
     @Then("Lucy should hear Sean's message")
     public void hears_message() {
-        assertThat(people.get("Lucy").getMessagesHeard()).contains(messageFromSean);
+        List<String> heardByLucy = people.get("Lucy").getMessagesHeard();
+        List<String> messagesFromSean = messagesShoutedBy.get("Sean");
+        assertThat(heardByLucy).containsAll(messagesFromSean);
     }
-
 
     @Then("{word} should hear a shout")
     public void lucyShouldHear(String name) {
@@ -84,9 +100,16 @@ public class StepDefinitions {
         expectedMessages.diff(DataTable.create(actualMessages));
     }
 
-    @DataTableType
-    public Whereabouts defineWhereabouts(Map<String, String> entry) {
-        return new Whereabouts(entry.get("name"), Integer.parseInt(entry.get("location")));
+    @Then("Lucy hears all Sean's messages")
+    public void lucyHearsAllSeanSMessages() {
+        List<String> heardByLucy = people.get("Lucy").getMessagesHeard();
+        List<String> messagesFromSean = messagesShoutedBy.get("Sean");
+        assertThat(heardByLucy).containsAll(messagesFromSean);
     }
 
+    @Then("Sean should have {int} credits")
+    public void seanShouldHaveCredits(int credits) {
+        int seanHasCredits = people.get("Sean").getCredits();
+        assertThat(seanHasCredits).isEqualTo(credits);
+    }
 }
