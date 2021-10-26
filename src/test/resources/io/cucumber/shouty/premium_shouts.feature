@@ -12,7 +12,7 @@ Feature: Premium account
 
   Scenario: Test premium account feature
     Given Sean has bought 30 credits
-    When Sean shouts "Come and buy a coffee"
+    When Sean shouts a message containing the word "buy"
     And Sean shouts "My bagels are yummy"
     And Sean shouts "Free cookie with your espresso for the next hour"
     And Sean shouts the following message
@@ -20,7 +20,7 @@ Feature: Premium account
     You need to come and visit Sean's coffee,
     we have the best bagels in town.
     """
-    And Sean shouts "Who will buy my sweet red muffins?"
+    And Sean shouts a message containing the word "buy"
     And Sean shouts the following message
     """
     This morning I got up early
@@ -30,6 +30,16 @@ Feature: Premium account
     they had some delicious fresh eggs waiting for me
     and I scrambled them just for you.
     Com on over and let's eat breakfast!
+    """
+    And Sean shouts a message containing the word "buy"
+    And Sean shouts the following message
+    """
+    Here are some things you will love about Sean's:
+    - the bagels
+    - the coffee
+    - the chickens
+    - Come and visit us today! We'd really love to see you.
+    Pop round anytime, honestly it's fine.
     """
     And Sean shouts "We have cakes by the dozen"
     Then Lucy hears all Sean's messages

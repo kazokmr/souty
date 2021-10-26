@@ -55,14 +55,19 @@ public class StepDefinitions {
         people.get("Sean").setCredits(credits);
     }
 
+    @When("Sean shouts")
+    public void seanShouts() {
+        shout("Hello Cucumber!");
+    }
+
     @When("Sean shouts {string}")
     public void shouts(String message) {
         shout(message);
     }
 
-    @When("Sean shouts")
-    public void seanShouts() {
-        shout("Hello Cucumber!");
+    @When("Sean shouts a message containing the word {string}")
+    public void seanShoutsAMessageContainingTheWord(String word) {
+        shout("a message containing the word " + word);
     }
 
     @When("Sean shouts the following message")
