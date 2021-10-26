@@ -1,5 +1,9 @@
 Feature: Premium account
 
+  Rules:
+  * Mention the word "buy" and you lose 5 credits.
+  * Long messages cost 2 credits.
+
   Background:
     Given the range is 100
     And people are located at
@@ -31,7 +35,7 @@ Feature: Premium account
     Then Lucy hears all Sean's messages
     And Sean should have 11 credits
 
-  @Todo
+  @todo
   Scenario: BUG #2789
     Given Sean has bought 30 credits
     When Sean shouts "buy, buy buy!"
