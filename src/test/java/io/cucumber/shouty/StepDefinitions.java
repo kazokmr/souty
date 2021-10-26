@@ -65,9 +65,11 @@ public class StepDefinitions {
         shout(message);
     }
 
-    @When("Sean shouts a message containing the word {string}")
-    public void seanShoutsAMessageContainingTheWord(String word) {
-        shout("a message containing the word " + word);
+    @When("Sean shouts {int} messages containing the word {string}")
+    public void seanShoutsSomeMessagesContainingTheWord(int count, String word) {
+        for (int i = 0; i < count; i++) {
+            shout("a message containing the word " + word);
+        }
     }
 
     @When("Sean shouts the following message")
@@ -89,12 +91,15 @@ public class StepDefinitions {
         shout(longMessage);
     }
 
-    @When("Sean shouts an over-long message")
-    public void seanShoutsAnOverLongMessage() {
+    @When("Sean shouts {int} over-long messages")
+    public void seanShoutsSomeOverLongMessages(int count) {
         String baseMessage = "A message from Sean that is 181 characters long";
         String padding = "x";
         String overLongMessage = baseMessage + padding.repeat(181 - baseMessage.length());
-        shout(overLongMessage);
+
+        for (int i = 0; i < count; i++) {
+            shout(overLongMessage);
+        }
     }
 
     private void shout(String message) {
