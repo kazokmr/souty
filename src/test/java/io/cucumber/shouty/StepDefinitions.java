@@ -122,4 +122,13 @@ public class StepDefinitions {
         int seanHasCredits = people.get("Sean").getCredits();
         assertThat(seanHasCredits).isEqualTo(credits);
     }
+
+    @When("Sean shouts a long message")
+    public void seanShoutsALongMessage() {
+        String longMessage = """
+                                
+                A message from sean
+                that spans multiple lines""";
+        shout(longMessage);
+    }
 }
