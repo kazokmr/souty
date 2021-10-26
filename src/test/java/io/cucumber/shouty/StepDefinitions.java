@@ -80,6 +80,23 @@ public class StepDefinitions {
         shout("here is a message");
     }
 
+    @When("Sean shouts a long message")
+    public void seanShoutsALongMessage() {
+        String longMessage = """
+                                
+                A message from sean
+                that spans multiple lines""";
+        shout(longMessage);
+    }
+
+    @When("Sean shouts an over-long message")
+    public void seanShoutsAnOverLongMessage() {
+        String baseMessage = "A message from Sean that is 181 characters long";
+        String padding = "x";
+        String overLongMessage = baseMessage + padding.repeat(181 - baseMessage.length());
+        shout(overLongMessage);
+    }
+
     private void shout(String message) {
         people.get("Sean").shout(message);
         messagesShoutedBy.computeIfAbsent("Sean", s -> new ArrayList<>());
@@ -121,14 +138,5 @@ public class StepDefinitions {
     public void seanShouldHaveCredits(int credits) {
         int seanHasCredits = people.get("Sean").getCredits();
         assertThat(seanHasCredits).isEqualTo(credits);
-    }
-
-    @When("Sean shouts a long message")
-    public void seanShoutsALongMessage() {
-        String longMessage = """
-                                
-                A message from sean
-                that spans multiple lines""";
-        shout(longMessage);
     }
 }
