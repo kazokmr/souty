@@ -1,8 +1,8 @@
 Feature: Premium account
 
   Rules:
-  * Mention the word "buy" and you lose 5 credits.
-  * Long messages cost 2 credits.
+* Mention the word "buy" and you lose 5 credits.
+* Long messages cost 2 credits.
 
   Background:
     Given the range is 100
@@ -13,8 +13,8 @@ Feature: Premium account
   Scenario: Test premium account feature
     Given Sean has bought 30 credits
     When Sean shouts a message containing the word "buy"
-    And Sean shouts "My bagels are yummy"
-    And Sean shouts "Free cookie with your espresso for the next hour"
+    And Sean shouts a message
+    And Sean shouts a message
     And Sean shouts the following message
     """
     You need to come and visit Sean's coffee,
@@ -41,7 +41,7 @@ Feature: Premium account
     - Come and visit us today! We'd really love to see you.
     Pop round anytime, honestly it's fine.
     """
-    And Sean shouts "We have cakes by the dozen"
+    And Sean shouts a message
     Then Lucy hears all Sean's messages
     And Sean should have 11 credits
 

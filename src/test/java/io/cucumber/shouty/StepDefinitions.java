@@ -75,6 +75,11 @@ public class StepDefinitions {
         shout(message);
     }
 
+    @When("Sean shouts a message")
+    public void seanShoutsAMessage() {
+        shout("here is a message");
+    }
+
     private void shout(String message) {
         people.get("Sean").shout(message);
         messagesShoutedBy.computeIfAbsent("Sean", s -> new ArrayList<>());
