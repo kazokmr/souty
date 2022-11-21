@@ -3,7 +3,6 @@ package io.cucumber.shouty;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
 import io.cucumber.java.DataTableType;
-import io.cucumber.java.Transpose;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -46,8 +45,8 @@ public class StepDefinitions {
     }
 
     @Given("people are located at")
-    public void people_are_located_at(@Transpose List<Whereabouts> whereabouts) {
-        whereabouts.forEach(row -> people.put(row.getName(), new Person(network, row.getLocation())));
+    public void people_are_located_at(List<Whereabouts> whereabouts) {
+        whereabouts.forEach(row -> people.put(row.name(), new Person(network, row.location())));
     }
 
     @Given("Sean has bought {int} credits")
