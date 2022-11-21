@@ -41,6 +41,6 @@ jobs:
 
       # ビルトの実行 (Cucumber reportsにCI情報を出力する）
       - name: Build with Gradle
-        run: ./gradlew clean test
+        run: ./gradlew clean check
         env:
           CI: true
